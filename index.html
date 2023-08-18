@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Conway's Game of Life</title>
+    <link rel="stylesheet" href="./index.css" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+      <div id="div-side">
+        <div id="title">
+          <div>Game of Life</div>
+          <div><a href="https://github.com/higuma/game-of-life"><img src="img/github-mark.svg" width="20" height="20" /></a></div>
+        </div>
+        <div class="div-player">
+          <button id="reset" title="Reset"><img src="img/reset.svg" /></button>
+          <button id="pause" title="Pause"><img src="img/pause.svg" /></button>
+          <button id="step" title="Step"><img src="img/step.svg" /></button>
+          <button id="play" title="Play"><img src="img/play.svg" /></button>
+        </div>
+        <div class="div-player">
+          <div>Speed</div>
+          <input type="range" min="0" max="10" value="5" id="speed" />
+          <div id="speed-text">×1</div>
+        </div>
+        <div id="div-settings" class="div-panel">
+          <div class="panel-title">Dimension</div>
+          <div class="panel-row">
+            <div class="settings-label">Width</div>
+            <input class="settings-value" id="settings-width" name="width" type="number" min="32" max="256" value="128" />
+          </div>
+          <div class="panel-row">
+            <div class="settings-label">Height</div>
+            <input class="settings-value" id="settings-height" name="height" type="number" min="32" max="256" value="64" />
+          </div>
+          <div class="panel-title">Initial Pattern</div>
+          <div class="panel-row">
+            <input class="settings-pattern" id="settings-pattern-2" name="2" type="checkbox" checked />
+            <label class="settings-pattern-label" for="settings-pattern-2">×2</label>
+            <input class="settings-pattern" id="settings-pattern-3" name="3" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-3">×3</label>
+          </div>
+          <div class="panel-row">
+            <input class="settings-pattern" id="settings-pattern-5" name="5" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-5">×5</label>
+            <input class="settings-pattern" id="settings-pattern-7" name="7" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-7">×7</label>
+          </div>
+          <div class="panel-row">
+            <input class="settings-pattern" id="settings-pattern-11" name="11" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-11">×11</label>
+            <input class="settings-pattern" id="settings-pattern-13" name="13" type="checkbox" checked />
+            <label class="settings-pattern-label" for="settings-pattern-13">×13</label>
+          </div>
+          <div class="panel-row">
+            <input class="settings-pattern" id="settings-pattern-17" name="17" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-17">×17</label>
+            <input class="settings-pattern" id="settings-pattern-19" name="19" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-19">×19</label>
+          </div>
+          <div class="panel-row">
+            <input class="settings-pattern" id="settings-pattern-23" name="23" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-23">×23</label>
+            <input class="settings-pattern" id="settings-pattern-29" name="29" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-29">×29</label>
+          </div>
+          <div class="panel-row">
+            <input class="settings-pattern" id="settings-pattern-31" name="31" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-31">×31</label>
+            <input class="settings-pattern" id="settings-pattern-37" name="37" type="checkbox" />
+            <label class="settings-pattern-label" for="settings-pattern-37">×37</label>
+          </div>
+        </div>
+        <div id="div-monitor" class="div-panel">
+          <div class="panel-title">Progress</div>
+          <div class="panel-row">
+            <div class="monitor-label">Steps (ticks)</div>
+            <div class="monitor-value" id="monitor-steps">---</div>
+          </div>
+          <div class="panel-title">Frames per seconds</div>
+          <div class="panel-row">
+            <div class="monitor-label">latest</div>
+            <div class="monitor-value" id="monitor-fps-latest">---</div>
+          </div>
+          <div class="panel-row">
+            <div class="monitor-label">avg of last 100</div>
+            <div class="monitor-value" id="monitor-fps-avg">---</div>
+          </div>
+          <div class="panel-row">
+            <div class="monitor-label">min of last 100</div>
+            <div class="monitor-value" id="monitor-fps-min">---</div>
+          </div>
+          <div class="panel-row">
+            <div class="monitor-label">max of last 100</div>
+            <div class="monitor-value" id="monitor-fps-max">---</div>
+          </div>
+        </div>
+      </div>
+      <div id="div-canvas">
+        <canvas id="game-of-life-canvas"></canvas>
+      </div>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>

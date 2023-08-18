@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+rm -f index.*
+rm -rf img/
+cp -r .tmp/* .
