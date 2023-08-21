@@ -1,8 +1,21 @@
+import Animation from './Animation';
+
 const SPEED_TEXT      = [
   '×1/32', '×1/16', '×1/8', '×1/4', '×1/2', '×1', '×2', '×4', '×8', '×16', '×32',
 ];
-const ANIMATION_SPEED = [
-    1/32 ,   1/16 ,   1/8 ,   1/4 ,   1/2 ,   1 ,   2 ,   4 ,   8 ,   16 ,   32 ,
+
+const ANIMATION_PERIOD = [  // [msec] Based on 60FPS: i.e. ×1 = 1000 / 60 [msec]
+  1000 / 60 * 32,   // ×1/32
+  1000 / 60 * 16,   // ×1/16
+  1000 / 60 *  8,   // ×1/8
+  1000 / 60 *  4,   // ×1/4
+  1000 / 60 *  2,   // ×1/2
+  1000 / 60 *  1,   // ×1
+  1000 / 60 /  2,   // ×2
+  1000 / 60 /  4,   // ×4
+  1000 / 60 /  8,   // ×8
+  1000 / 60 / 16,   // ×16
+  1000 / 60 / 32,   // ×32
 ];
 
 export default class Player {
@@ -22,18 +35,23 @@ export default class Player {
     this.step.addEventListener('click', () => this.onStep());
     this.play.addEventListener('click', () => this.onPlay());
     this.speed.addEventListener('input', event => this.onSpeed(event));
-    this.animationId = null;
-    this.animationSpeed = 1;
-    this.animationProgress = 0;
+    this.animation = new Animation(
+      () => this.game.tick(),
+      () => {
+        this.canvas.render();
+        this.monitor.update();
+      },
+      ANIMATION_PERIOD[Number(this.speed.value)]
+    );
     this.onReset();
   }
 
-  disable() {
+  disable() {   // called on settings validation failure
     this.reset.disabled = true;
     this.pause.disabled = true;
     this.step.disabled = true;
     this.play.disabled = true;
-    this.stopAnimation();
+    this.animation.stop();
   }
 
   onReset() {
@@ -41,7 +59,7 @@ export default class Player {
     this.pause.disabled = true;
     this.step.disabled = false;
     this.play.disabled = false;
-    this.stopAnimation();
+    this.animation.stop();
     this.game.reset();
     this.canvas.render();
     this.settings.disable(false);
@@ -54,7 +72,7 @@ export default class Player {
     this.step.disabled = false;
     this.play.disabled = false;
     this.settings.disable(true);
-    this.stopAnimation();
+    this.animation.stop();
   }
 
   onStep() {
@@ -62,7 +80,7 @@ export default class Player {
     this.pause.disabled = true;
     this.step.disabled = false;
     this.play.disabled = false;
-    this.stopAnimation();
+    this.animation.stop();
     this.settings.disable(true);
     this.game.tick();
     this.canvas.render();
@@ -74,41 +92,13 @@ export default class Player {
     this.pause.disabled = false;
     this.step.disabled = true;
     this.play.disabled = true;
-    this.startAnimation();
+    this.animation.start();
     this.settings.disable(true);
   }
 
   onSpeed(event) {
     const i = Number(event.target.value);
-    this.animationSpeed = ANIMATION_SPEED[i];
     this.speedText.textContent = SPEED_TEXT[i];
-  }
-
-  startAnimation() {
-    this.animationProgress = 0;
-    if (this.animationId == null) {
-      this.animationId = window.requestAnimationFrame(() => this.animate());
-    }
-  }
-
-  stopAnimation() {
-    if (this.animationId != null) {
-      window.cancelAnimationFrame(this.animationId);
-      this.animationId = null;
-      this.monitor.reset();
-    }
-  }
-
-  animate() {
-    this.animationProgress += this.animationSpeed;
-    if (this.animationProgress >= 1) {
-      while (this.animationProgress > 0) {
-        this.animationProgress -= 1;
-        this.game.tick();
-      }
-      this.canvas.render();
-    }
-    this.monitor.update();
-    this.animationId = window.requestAnimationFrame(() => this.animate());
+    this.animation.setPeriod(ANIMATION_PERIOD[i]);
   }
 }
